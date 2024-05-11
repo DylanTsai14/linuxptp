@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "ptpDebug",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/ptp4l",
+        "args": [
+          "-2", "-f", "${workspaceFolder}/configs/automotive-master.cfg", "-i", "ens37", "-S", "-m", "-P", "-l", "7"
+        ],
+        "cwd": "${workspaceFolder}",
+        "preLaunchTask": "ptpBuild",
+        "externalConsole": false,
+        "miDebuggerPath": "${workspaceFolder}/sudo_gdb",
+        "MIMode": "gdb",
+      }
+    ]
+}

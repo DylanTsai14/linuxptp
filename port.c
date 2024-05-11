@@ -1786,6 +1786,10 @@ int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 		err = -1;
 		goto out;
 	}
+	
+	/* fup up correction field test code start */
+	fup->header.correction         = 0xffffffff;
+	/* fup up correction field test code end */
 
 	err = port_prepare_and_send(p, fup, TRANS_GENERAL);
 	if (err) {
@@ -2462,22 +2466,22 @@ calc:
 
 int process_pdelay_resp(struct port *p, struct ptp_message *m)
 {
-	if (p->peer_delay_resp) {
-                if (!p->multiple_pdr_detected) {
-                        pr_err("%s: multiple peer responses", p->log_name);
-                        p->multiple_pdr_detected = 1;
-                        p->multiple_seq_pdr_count++;
-                }
-                if (p->multiple_seq_pdr_count > p->allowedLostResponses) {
-                        p->last_fault_type = FT_BAD_PEER_NETWORK;
-                        return -1;
-                }
-        }
+	// if (p->peer_delay_resp) {
+    //             if (!p->multiple_pdr_detected) {
+    //                     pr_err("%s: multiple peer responses", p->log_name);
+    //                     p->multiple_pdr_detected = 1;
+    //                     p->multiple_seq_pdr_count++;
+    //             }
+    //             if (p->multiple_seq_pdr_count > p->allowedLostResponses) {
+    //                     p->last_fault_type = FT_BAD_PEER_NETWORK;
+    //                     return -1;
+    //             }
+    //     }
 
-	if (!p->peer_delay_req) {
-		pr_err("%s: rogue peer delay response", p->log_name);
-		return -1;
-	}
+	// if (!p->peer_delay_req) {
+	// 	pr_err("%s: rogue peer delay response", p->log_name);
+	// 	return -1;
+	// }
 	if (p->peer_portid_valid) {
 		if (!pid_eq(&p->peer_portid, &m->header.sourcePortIdentity)) {
 			pr_err("%s: received pdelay_resp msg with "
