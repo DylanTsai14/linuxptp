@@ -1865,6 +1865,11 @@ int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 		err = -1;
 		goto out;
 	}
+	
+	/* fup up correction field test code start */
+	fup->header.correction         = 32768000000;//500,000ns 0x7A120.0000ns
+	// fup->header.correction         = 32768065536;//500,001ns 0x7A121.0000ns
+	/* fup up correction field test code end */
 
 	err = port_prepare_and_send(p, fup, TRANS_GENERAL);
 	if (err) {
