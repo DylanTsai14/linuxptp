@@ -1768,7 +1768,7 @@ int port_tx_announce(struct port *p, struct address *dst, uint16_t sequence_id)
 	msg_put(msg);
 	return err;
 }
-
+static volatile unsigned long tst_cnt;
 int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 {
 	struct ptp_message *msg, *fup;
@@ -1855,6 +1855,12 @@ int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 	fup->header.logMessageInterval = p->logSyncInterval;
 
 	fup->follow_up.preciseOriginTimestamp = tmv_to_Timestamp(msg->hwts.ts);
+	/* fup up preciseOriginTimestamp test code start */
+	fup->follow_up.preciseOriginTimestamp.seconds_msb = 0;
+	fup->follow_up.preciseOriginTimestamp.seconds_lsb = 1715569670;
+	fup->follow_up.preciseOriginTimestamp.nanoseconds = 0;
+	/* fup up preciseOriginTimestamp test code end */
+
 
 	if (dst) {
 		fup->address = *dst;
@@ -1867,8 +1873,11 @@ int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 	}
 	
 	/* fup up correction field test code start */
-	fup->header.correction         = 32768000000;//500,000ns 0x7A120.0000ns
+	fup->header.correction         = 8192000000000 * (tst_cnt++);//add 125ms once
+	// fup->header.correction         = 6553600000;//100,000ns 0x186A0.0000ns
+	// fup->header.correction         = 32768000000;//500,000ns 0x7A120.0000ns
 	// fup->header.correction         = 32768065536;//500,001ns 0x7A121.0000ns
+	// fup->header.correction         = 65536000000000;//1s 0x3B9ACA00.0000ns
 	/* fup up correction field test code end */
 
 	err = port_prepare_and_send(p, fup, TRANS_GENERAL);
