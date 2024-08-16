@@ -1777,9 +1777,9 @@ int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 
 	fup->follow_up.preciseOriginTimestamp = tmv_to_Timestamp(msg->hwts.ts);
 	/* fup up preciseOriginTimestamp test code start */
-	fup->follow_up.preciseOriginTimestamp.seconds_msb = 0;
-	fup->follow_up.preciseOriginTimestamp.seconds_lsb = 1715569670;
-	fup->follow_up.preciseOriginTimestamp.nanoseconds = 0;
+	// fup->follow_up.preciseOriginTimestamp.seconds_msb = 0;
+	// fup->follow_up.preciseOriginTimestamp.seconds_lsb = 1715569671;
+	// fup->follow_up.preciseOriginTimestamp.nanoseconds = 0;
 	/* fup up preciseOriginTimestamp test code end */
 
 
@@ -1794,7 +1794,7 @@ int port_tx_sync(struct port *p, struct address *dst, uint16_t sequence_id)
 	}
 	
 	/* fup up correction field test code start */
-	fup->header.correction         = 8192000000000 * (tst_cnt++);//add 125ms once
+	// fup->header.correction         = 8192000000000 * (++tst_cnt);//add 125ms once
 	// fup->header.correction         = 6553600000;//100,000ns 0x186A0.0000ns
 	// fup->header.correction         = 32768000000;//500,000ns 0x7A120.0000ns
 	// fup->header.correction         = 32768065536;//500,001ns 0x7A121.0000ns
